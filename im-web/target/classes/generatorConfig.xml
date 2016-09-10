@@ -30,7 +30,7 @@
 		</javaTypeResolver>
 
 		<!-- 实例类存储位置 修改targetPackage 目录要提前创建 -->
-       <javaModelGenerator targetPackage="com.carnation.user.domain" targetProject="F:\carnation\project\chat\im-user\im-user-api\src\main\java">
+       <javaModelGenerator targetPackage="com.vme.chat.user.domain" targetProject="F:\carnation\project\chat\im-user\im-user-api\src\main\java">
             <!-- 是否对model添加 构造函数 -->
             <property name="constructorBased" value="true"/>
 
@@ -53,7 +53,7 @@
 			<property name="javaFileEncoding" value="UTF-8"/>
 		</sqlMapGenerator>
         <!-- dao层mapper接口存储位置 修改targetPackage 目录要提前创建  -->
-		<javaClientGenerator type="XMLMAPPER" targetPackage="com.carnation.user.dao"
+		<javaClientGenerator type="XMLMAPPER" targetPackage="com.vme.chat.user.dao"
 		    targetProject="F:\carnation\project\chat\im-user\im-user-service\src\main\java">
 			<property name="enableSubPackages" value="true" />
 			<property name="javaFileEncoding" value="UTF-8"/>

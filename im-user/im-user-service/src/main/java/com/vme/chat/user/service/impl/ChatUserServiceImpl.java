@@ -1,6 +1,7 @@
 package com.vme.chat.user.service.impl;
 
 import com.vme.chat.user.dao.ChatUserMapper;
+import com.vme.chat.user.domain.ChatUser;
 import com.vme.chat.user.service.ChatUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,10 +19,14 @@ public class ChatUserServiceImpl implements ChatUserService {
 
     @Override
     public boolean login(String username, String password) {
+        boolean flag=false;
         Map map = new HashMap<>();
         map.put("username",username);
         map.put("password",password);
-        chatUserMapper.login(map);
-        return true;
+        ChatUser chatUser = chatUserMapper.login(map);
+        if(chatUser!=null){
+            flag = true;
+        }
+        return flag;
     }
 }

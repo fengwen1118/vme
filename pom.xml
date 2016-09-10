@@ -17,7 +17,9 @@
 
     <properties>
         <!-- main version setting -->
-
+        <jackson1.version>1.9.13</jackson1.version>
+        <guava.version>r09</guava.version>
+        <springside.version>4.0.0</springside.version>
         <spring.version>4.0.8.RELEASE</spring.version>
         <spring-date.version>1.6.2.RELEASE</spring-date.version>
         <validator.version>5.1.1.Final</validator.version>
@@ -26,6 +28,8 @@
         <druid.version>1.0.11</druid.version>
         <!-- tools version setting -->
         <slf4j.version>1.7.7</slf4j.version>
+        <servlet.version>2.5</servlet.version>
+        <commons-lang.version>2.6</commons-lang.version>
         <commons-lang3.version>3.3.2</commons-lang3.version>
         <commons-io.version>2.4</commons-io.version>
         <commons-codec.version>1.9</commons-codec.version>
@@ -109,6 +113,12 @@
             <groupId>org.springframework</groupId>
             <artifactId>spring-jdbc</artifactId>
             <version>${spring.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springside</groupId>
+            <artifactId>springside-core</artifactId>
+            <version>${springside.version}</version>
         </dependency>
 
         <!-- bean validate
@@ -218,6 +228,28 @@
                     <artifactId>commons-logging</artifactId>
                 </exclusion>
             </exclusions>
+        </dependency>
+
+        <dependency>
+            <groupId>commons-lang</groupId>
+            <artifactId>commons-lang</artifactId>
+            <version>${commons-lang.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>servlet-api</artifactId>
+            <scope>provided</scope>
+            <version>${servlet.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>${guava.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.codehaus.jackson</groupId>
+            <artifactId>jackson-mapper-asl</artifactId>
+            <version>${jackson1.version}</version>
         </dependency>
 
         <!-- TEST begin -->

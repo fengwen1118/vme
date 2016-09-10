@@ -47,5 +47,5 @@ public interface ChatUserMapper {
      */
     int updateByPrimaryKey(ChatUser record);
 
-    void login(Map map);
+    ChatUser login(Map map);
 }

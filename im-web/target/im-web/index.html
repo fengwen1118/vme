@@ -12,16 +12,94 @@
 <body>
 <div class="signin">
     <div class="signin-head"><img src="login/images/test/head_120.png" alt="" class="img-circle"></div>
-    <form class="form-signin" role="form" action="user/login.do">
-        <input type="text" name="userName" class="form-control" placeholder="用户名" required autofocus />
-        <input type="password" name="passWord" class="form-control" placeholder="密码" required />
-        <button class="btn btn-lg btn-warning btn-block" type="submit">登录</button>
+    <form class="form-signin" role="form" >
+        <input type="text" id="userName" class="form-control" placeholder="用户名" required autofocus />
+        <input type="password" id="passWord" class="form-control" placeholder="密码" required />
+        <button class="btn btn-lg btn-warning btn-block" id="loginBtn" type="button">登录</button>
         <label class="checkbox">
             <input type="checkbox" value="remember-me"> 记住我
         </label>
     </form>
 </div>
 
-
 </body>
 </html>
+<script src="js/jquery.min.js"></script>
+<script src="js/strophe.min.js"></script>
+<script src="js/jquery.cookie.js"></script>
+<script src="js/chat.js"></script>
+<script>
+
+    var BOSH_SERVICE = 'http://localhost:7070/http-bind/';
+    var connection = new Strophe.Connection(BOSH_SERVICE);
+    var domainName="@localhost";
+    $(function(){
+        $('#loginBtn').click(function(){
+            $.ajax({
+                type: "GET",
+                url: "user/login.do",
+                data: {
+                       userName:$("#userName").val(),
+                       passWord:$("#passWord").val()
+                },
+                dataType: "json",
+                success: function(data){
+                    if(data.success){
+                        connection.connect($("#userName").val()+domainName,
+                                $("#passWord").val(),
+                                onConnect);
+                       // window.location.href="user/chatPage.do";
+                    }
+
+                }
+            });
+        });
+
+        function onConnect(status)
+        {
+            if (status == Strophe.Status.CONNECTING) {
+                log('正在连接...');
+            } else if (status == Strophe.Status.CONNFAIL) {
+                log('Strophe failed to connect.');
+            } else if (status == Strophe.Status.DISCONNECTING) {
+                log('Strophe is disconnecting.');
+            } else if (status == Strophe.Status.DISCONNECTED) {
+                log('Strophe is disconnected.');
+            } else if (status == Strophe.Status.CONNECTED) {
+                log('连接成功！');
+                console.log('Strophe is connected.');
+                $.cookie('jid', connection.jid);
+                $.cookie('sid', connection.sid);
+                $.cookie('rid', connection.rid);
+
+                var iq = $iq({type: 'get'}).c('query', {xmlns: 'jabber:iq:roster'});
+                connection.sendIQ(iq, getFriends); // getFriends是回调函数
+                connection.addHandler(onMessage, null, 'message', null, null,  null);
+                connection.send($pres().tree());
+                window.location.href="user/chatPage.do";
+            }
+        }
+
+        function onMessage(msg) {
+            var to = msg.getAttribute('to');
+            var from = msg.getAttribute('from');
+            var type = msg.getAttribute('type');
+            var elems = msg.getElementsByTagName('body');
+            if (type == "chat" && elems.length > 0) {
+                var body = elems[0];
+                log(new Date().toLocaleTimeString() + ' ' + from + ': ' + Strophe.getText(body));
+            }
+            return true;
+        }
+
+        function getFriends(iq){
+            $(iq).find('item').each(function () {
+                var jid = $(this).attr('jid');
+                var name = $(this).attr('name') || jid;
+               // $('#friendlist').html('');
+               // $('#friendlist').append('<li><span>'+ jid +'</span> <a href="#'+ jid +'">talk</a></li>');
+                console.log(jid + ' - ' + name);
+            });
+        }
+    });
+</script>
